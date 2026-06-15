@@ -1,4 +1,5 @@
 import "./styles.css";
-import { weatherAPI } from "./weatherAPI.js";
+// import { weatherAPI } from "./weatherAPI.js";
+import { displayController } from "./displayController.js";
 
-console.log(weatherAPI.getWeatherData("Saskatoon"));
+displayController.displayProcessedWeatherData("Saskatoon Canada");
