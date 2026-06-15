@@ -1,3 +1,4 @@
 import "./styles.css";
+import { weatherAPI } from "./weatherAPI.js";
 
-console.log("Webpack template ready. Start building!");
+console.log(weatherAPI.getWeatherData("Saskatoon"));
