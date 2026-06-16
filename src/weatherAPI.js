@@ -2,24 +2,37 @@
 const API_KEY = "YJ7UHYK5GBBHC32JUHKHGJD97";
 
 async function getWeatherData(location) {
+  const encodedLocation = encodeURIComponent(location);
+
+  const response = await fetch(
+    `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${encodedLocation}?key=${API_KEY}&unitGroup=metric`,
+  );
+
+  if (!response.ok) {
+    throw new Error(`LOCATION NOT FOUND - status: ${response.status}`);
+  }
+
+  const data = await response.json();
+  return data;
+}
+
+function processWeatherData(weatherData) {
+  if (!weatherData) return null;
+
+  return {
+    resolvedLocation: weatherData.resolvedAddress,
+    temperature: weatherData.currentConditions?.temp ?? null,
+  };
+}
+
+async function getWeather(location) {
   try {
-    const response = await fetch(
-      `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}?key=${API_KEY}&unitGroup=metric`,
-    );
-    const data = await response.json();
-    return data;
+    const weatherData = await getWeatherData(location);
+    return processWeatherData(weatherData);
   } catch (error) {
     console.error("Error fetching weather data:", error);
+    throw error;
   }
 }
 
-async function processWeatherData(location) {
-  const weatherData = await getWeatherData(location);
-  if (weatherData) {
-    const location = weatherData.resolvedAddress;
-    const temperature = weatherData.currentConditions?.temp ?? null;
-    return { location, temperature };
-  }
-}
-
-export const weatherAPI = { processWeatherData };
+export const weatherAPI = { getWeather };

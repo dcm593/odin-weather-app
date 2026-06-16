@@ -1,14 +1,20 @@
 import { weatherAPI } from "./weatherAPI.js";
 
-async function displayProcessedWeatherData(location) {
-  const processedWeatherData = await weatherAPI.processWeatherData(location);
-  if (processedWeatherData) {
-    const locationElement = document.getElementById("location-data");
-    const temperatureElement = document.getElementById("temperature-data");
+async function displayWeather(location) {
+  const locationElement = document.getElementById("location-data");
+  const temperatureElement = document.getElementById("temperature-data");
 
-    locationElement.textContent = processedWeatherData.location;
-    temperatureElement.textContent = `${processedWeatherData.temperature} °C`;
+  try {
+    const weather = await weatherAPI.getWeather(location);
+    const safeText = (value, fallback = "—") => value ?? fallback;
+
+    locationElement.textContent = safeText(weather.resolvedLocation);
+    temperatureElement.textContent = safeText(weather.temperature) + " °C";
+  } catch (error) {
+    console.error("Error displaying weather:", error);
+    locationElement.textContent = "Error fetching weather data";
+    temperatureElement.textContent = "—";
   }
 }
 
-export const displayController = { displayProcessedWeatherData };
+export const displayController = { displayWeather };
