@@ -6,14 +6,27 @@
     <title>Weather App</title>
   </head>
   <body>
-    <div id="app">
-      <div id="location">
-        <span>Location: </span>
-        <span id="location-data"></span>
+    <div class="form-container">
+      <form id="search-weather-form">
+        <input
+          type="text"
+          id="search-input"
+          placeholder="Search weather for any location (e.g., 'City, Province/State, Country')"
+          required
+        />
+        <button type="submit">Get the Weather</button>
+      </form>
+    </div>
+    <div class="weather-display">
+      <div class="weather-info">
+        <h2 id="location"></h2>
+        <span id="coordinates"></span>
+        <p id="temperature"></p>
+        <p id="humidity"></p>
+        <p id="wind-speed"></p>
+        <p id="current-conditions"></p>
+        <p id="next-hour"></p>
       </div>
-    </div id="temperature">
-      <span>Temperature: </span>
-      <span id="temperature-data"></span>
     </div>
   </body>
 </html>

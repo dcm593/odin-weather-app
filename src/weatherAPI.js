@@ -19,9 +19,23 @@ async function getWeatherData(location) {
 function processWeatherData(weatherData) {
   if (!weatherData) return null;
 
+  const nextHour = weatherData.days?.[0]?.hours?.[0] ?? null;
+
   return {
     resolvedLocation: weatherData.resolvedAddress,
     temperature: weatherData.currentConditions?.temp ?? null,
+    conditions: weatherData.currentConditions?.conditions ?? null,
+    coordinates: {
+      latitude: weatherData.latitude,
+      longitude: weatherData.longitude,
+    },
+    humidity: weatherData.currentConditions?.humidity ?? null,
+    windSpeed: weatherData.currentConditions?.windspeed ?? null,
+    nextHour: {
+      precipitationChance: nextHour?.precipprob ?? 0,
+      precipitationType: nextHour?.preciptype?.join(", ") ?? null,
+      conditions: nextHour?.conditions ?? null,
+    },
   };
 }
 
