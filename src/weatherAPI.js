@@ -35,8 +35,17 @@ async function getWeatherData(location) {
 function processWeatherData(weatherData) {
   if (!weatherData) return null;
 
-  // The API nests hourly forecasts under each day; grab the first hour of today.
-  const nextHour = weatherData.days?.[0]?.hours?.[0] ?? null;
+  // The API nests hourly forecasts under each day. Pick the first hour AFTER the
+  // location's current time (looking into tomorrow too, so a late-night search
+  // rolls over correctly). Each hour's icon already encodes day vs night, so
+  // choosing the right hour yields the correct sun/moon icon automatically.
+  const currentEpoch = weatherData.currentConditions?.datetimeEpoch;
+  const upcomingHours = [
+    ...(weatherData.days?.[0]?.hours ?? []),
+    ...(weatherData.days?.[1]?.hours ?? []),
+  ];
+  const nextHour =
+    upcomingHours.find((hour) => hour.datetimeEpoch > currentEpoch) ?? null;
 
   return {
     resolvedLocation: weatherData.resolvedAddress,
