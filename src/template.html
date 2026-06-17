@@ -12,14 +12,19 @@
           <input
             type="text"
             id="search-input"
+            autocomplete="off"
             placeholder="Search weather for any location (e.g., 'City, Province/State, Country')"
             required
+            aria-describedby="input-hint"
           />
+          <span id="input-hint" class="input-hint" aria-live="polite"></span>
           <button type="submit">Get the Weather</button>
         </form>
       </div>
       <div class="weather-display">
-        <p id="weather-placeholder">Enter a location above and get the weather!</p>
+        <p id="weather-placeholder">
+          Enter a location above and get the weather!
+        </p>
         <div id="weather-content" class="hidden">
           <h2 id="location"></h2>
           <div class="location-subtext">
@@ -28,24 +33,33 @@
           </div>
           <div class="weather-grid">
             <div class="weather-cell">
-              <img class="weather-icon" src="./icons/humidity.svg" alt="Humidity" />
+              <img
+                class="weather-icon"
+                src="./icons/humidity.svg"
+                alt="Humidity"
+              />
+              <span class="weather-label">Humidity</span>
               <p id="humidity"></p>
             </div>
             <div class="weather-cell">
               <img class="weather-icon" id="current-icon" alt="" />
+              <span class="weather-label">Current Conditions</span>
               <p id="current-conditions"></p>
             </div>
             <div class="weather-cell">
               <img class="weather-icon" src="./icons/wind.svg" alt="Wind" />
+              <span class="weather-label">Wind Speed</span>
               <p id="wind-speed"></p>
             </div>
             <div class="weather-cell">
               <img class="weather-icon" id="next-hour-icon" alt="" />
+              <span class="weather-label">Next Hour</span>
               <p id="next-hour"></p>
             </div>
           </div>
         </div>
       </div>
+      <p id="load-time" class="load-time"></p>
     </div>
   </body>
 </html>

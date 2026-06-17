@@ -31,7 +31,7 @@ async function setWeatherIcon(imgElement, iconName) {
 
 /**
  * Builds a human-readable sentence about the upcoming hour's weather,
- * e.g. "65% chance of rain in the next hour".
+ * e.g. "65% chance of rain".
  *
  * @param {Object} nextHour - The `nextHour` slice of the normalized weather data.
  * @returns {string} A sentence describing the next hour.
@@ -42,13 +42,13 @@ function describeNextHour(nextHour) {
   if (chance > 0) {
     // precipitationType may be null (API didn't specify) — fall back to a generic word.
     const type = nextHour.precipitationType || "precipitation";
-    return `${chance}% chance of ${type} in the next hour`;
+    return `${chance}% chance of ${type}`;
   }
 
   // No precipitation expected: describe the forecasted conditions instead.
   return nextHour.conditions
-    ? `${nextHour.conditions} expected in the next hour`
-    : "No precipitation expected in the next hour";
+    ? `${nextHour.conditions} expected`
+    : "No precipitation expected";
 }
 
 /**
@@ -76,14 +76,20 @@ async function displayWeather(location) {
   const nextHourElement = document.getElementById("next-hour");
   const currentIconElement = document.getElementById("current-icon");
   const nextHourIconElement = document.getElementById("next-hour-icon");
+  const loadTimeElement = document.getElementById("load-time");
 
   try {
+    // Time the round-trip from submission to the API returning data.
+    const start = performance.now();
+    loadTimeElement.textContent = "";
+
     // While fetching, fall back to the placeholder area with a loading note.
     contentElement.classList.add("hidden");
     placeholderElement.classList.remove("hidden");
     placeholderElement.textContent = "Loading…";
 
     const weather = await weatherAPI.getWeather(location);
+    const elapsedSeconds = ((performance.now() - start) / 1000).toFixed(2);
 
     // Returns `fallback` for null/undefined/empty/NaN values, otherwise the value.
     const safeText = (value, fallback = "—") => {
@@ -92,13 +98,14 @@ async function displayWeather(location) {
         : value;
     };
 
-    // Label each data point so the raw values read as a sentence/stat.
+    // Grid-cell labels live in the markup (.weather-label); set only values here.
+    // Location/temperature/coordinates aren't grid cells and have no labels.
     locationElement.textContent = safeText(weather.resolvedLocation);
-    temperatureElement.textContent = `Temperature: ${safeText(weather.temperature)} °C`;
+    temperatureElement.textContent = `${safeText(weather.temperature)} °C`;
     coordinatesElement.textContent = `${safeText(weather.coordinates.latitude)}, ${safeText(weather.coordinates.longitude)}`;
-    humidityElement.textContent = `Humidity: ${safeText(weather.humidity)} %`;
-    windSpeedElement.textContent = `Wind Speed: ${safeText(weather.windSpeed)} km/h`;
-    currentConditionsElement.textContent = `Current Conditions: ${safeText(weather.conditions, "N/A")}`;
+    humidityElement.textContent = `${safeText(weather.humidity)} %`;
+    windSpeedElement.textContent = `${safeText(weather.windSpeed)} km/h`;
+    currentConditionsElement.textContent = safeText(weather.conditions, "N/A");
     nextHourElement.textContent = describeNextHour(weather.nextHour);
 
     // Swap in the live condition icons (dynamically imported). The humidity and
@@ -109,6 +116,8 @@ async function displayWeather(location) {
     // Reveal the populated layout.
     placeholderElement.classList.add("hidden");
     contentElement.classList.remove("hidden");
+
+    loadTimeElement.textContent = `Weather data loaded in ${elapsedSeconds}s`;
   } catch (error) {
     console.error("Error displaying weather:", error);
     // Keep the layout hidden and surface the problem in the placeholder spot.
@@ -116,6 +125,7 @@ async function displayWeather(location) {
     placeholderElement.classList.remove("hidden");
     placeholderElement.textContent =
       "Couldn't fetch weather for that location. Please try another search.";
+    loadTimeElement.textContent = "";
   }
 }
 
