@@ -1,8 +1,113 @@
 body {
   margin: 0;
   font-family: system-ui, sans-serif;
+  background-color: #3074b8;
+  color: #fff;
+  min-height: 100vh;
+}
+
+/* Centered column that holds the search form and the weather card. */
+.app {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+/* --- Search form --- */
+#search-weather-form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+#search-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.75rem 1.25rem;
+  border: none;
+  border-radius: 9999px;
+  font-size: 1rem;
+}
+
+#search-weather-form button {
+  padding: 0.5rem 1.5rem;
+  border: none;
+  border-radius: 9999px;
+  background-color: #1c387a;
+  color: #fff;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+#search-weather-form button:hover {
+  background-color: #162e66;
+}
+
+/* --- Weather display container --- */
+.weather-display {
+  background-color: #1c387a;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+#weather-placeholder {
+  margin: 0;
+  padding: 2rem 0;
+  font-size: 1.1rem;
+}
+
+.hidden {
+  display: none;
 }
 
 #location {
+  margin: 0 0 0.25rem;
+  font-size: 1.8rem;
   text-transform: capitalize;
+}
+
+/* Temp + coordinates: smaller subtext beneath the location, with a divider
+   separating it from the metric grid below. */
+.location-subtext {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  font-size: 0.9rem;
+  opacity: 0.85;
+}
+
+.location-subtext p {
+  margin: 0;
+}
+
+/* --- 2x2 metric grid --- */
+.weather-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.weather-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.weather-cell p {
+  margin: 0;
+}
+
+/* White circular "chip" so the icons stay legible on the dark container. */
+.weather-icon {
+  width: 56px;
+  height: 56px;
+  box-sizing: border-box;
+  padding: 6px;
+  background-color: #fff;
+  border-radius: 50%;
+  object-fit: contain;
 }

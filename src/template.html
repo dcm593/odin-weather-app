@@ -6,26 +6,45 @@
     <title>Weather App</title>
   </head>
   <body>
-    <div class="form-container">
-      <form id="search-weather-form">
-        <input
-          type="text"
-          id="search-input"
-          placeholder="Search weather for any location (e.g., 'City, Province/State, Country')"
-          required
-        />
-        <button type="submit">Get the Weather</button>
-      </form>
-    </div>
-    <div class="weather-display">
-      <div class="weather-info">
-        <h2 id="location"></h2>
-        <span id="coordinates"></span>
-        <p id="temperature"></p>
-        <p id="humidity"></p>
-        <p id="wind-speed"></p>
-        <p id="current-conditions"></p>
-        <p id="next-hour"></p>
+    <div class="app">
+      <div class="form-container">
+        <form id="search-weather-form">
+          <input
+            type="text"
+            id="search-input"
+            placeholder="Search weather for any location (e.g., 'City, Province/State, Country')"
+            required
+          />
+          <button type="submit">Get the Weather</button>
+        </form>
+      </div>
+      <div class="weather-display">
+        <p id="weather-placeholder">Enter a location above and get the weather!</p>
+        <div id="weather-content" class="hidden">
+          <h2 id="location"></h2>
+          <div class="location-subtext">
+            <p id="temperature"></p>
+            <span id="coordinates"></span>
+          </div>
+          <div class="weather-grid">
+            <div class="weather-cell">
+              <img class="weather-icon" src="./icons/humidity.svg" alt="Humidity" />
+              <p id="humidity"></p>
+            </div>
+            <div class="weather-cell">
+              <img class="weather-icon" id="current-icon" alt="" />
+              <p id="current-conditions"></p>
+            </div>
+            <div class="weather-cell">
+              <img class="weather-icon" src="./icons/wind.svg" alt="Wind" />
+              <p id="wind-speed"></p>
+            </div>
+            <div class="weather-cell">
+              <img class="weather-icon" id="next-hour-icon" alt="" />
+              <p id="next-hour"></p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </body>
